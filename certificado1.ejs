@@ -1,57 +1,198 @@
 <!DOCTYPE html>
-<html lang='es'>
+<html lang="es">
 <head>
-<meta charset='UTF-8'>
-<title>Certificado de Deuda</title>
-<style>
-body { font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #222; margin: 0; padding: 40px 60px; } 
-.header { display: flex; justify-content: flex-end; margin-bottom: 30px; } 
-.header img { max-height: 70px; } 
-.logo-centro { text-align: center; margin: 20px 0 30px 0; } 
-.logo-centro img { max-height: 90px; } 
-.fecha { margin-bottom: 25px; } 
-.titulo { text-align: center; font-weight: bold; font-size: 15px; margin-bottom: 20px; letter-spacing: 0.5px; } 
-.parrafo { text-align: justify; line-height: 1.6; margin-bottom: 20px; } 
-.seccion-titulo { font-weight: bold; margin-top: 15px; margin-bottom: 8px; } 
-table.datos { width: 100%; border-collapse: collapse; margin-bottom: 10px; } 
-table.datos td { padding: 4px 0; vertical-align: top; } 
-table.datos td.label { font-weight: bold; width: 220px; } 
-.firma-bloque { margin-top: 60px; text-align: left; } 
-.firma-bloque img { max-height: 70px; margin-bottom: 5px; } 
-.firma-nombre { font-weight: bold; }
-</style>
+    <meta charset="UTF-8">
+    <title>Certificado de Deuda</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            color: #222;
+            margin: 0;
+            padding: 40px 60px 100px 60px; /* Espacio inferior para el footer */
+            box-sizing: border-box;
+            position: relative;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-height: 60px;
+        }
+        .logo-centro {
+            text-align: center;
+            margin: 15px 0 25px 0;
+        }
+        .logo-centro img {
+            max-height: 80px;
+        }
+        .fecha {
+            margin-bottom: 25px;
+        }
+        .titulo {
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .parrafo {
+            text-align: justify;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .seccion-titulo {
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        table.datos {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        table.datos td {
+            padding: 4px 0;
+            vertical-align: top;
+        }
+        table.datos td.label {
+            font-weight: bold;
+            width: 220px;
+        }
+        .firma-bloque {
+            margin-top: 40px;
+            text-align: left;
+        }
+        .firma-bloque img {
+            max-height: 65px;
+            margin-bottom: 5px;
+        }
+        .firma-nombre {
+            font-weight: bold;
+        }
+        /* Pie de página en HTML */
+        .footer-container {
+            position: absolute;
+            bottom: 30px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #555;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 12px;
+        }
+        .footer-col {
+            flex: 1;
+            line-height: 1.5;
+        }
+        .footer-col.middle {
+            border-left: 2px solid #0098db;
+            padding-left: 15px;
+            margin: 0 15px;
+        }
+        .footer-col span.icon {
+            color: #0098db;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .footer-web {
+            background-color: #0098db;
+            color: white;
+            padding: 6px 15px;
+            font-weight: bold;
+            text-align: right;
+            clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 
-<div class='header'><img src="https://generador-cartas-n8n.com/logo-superior.png" alt='Logo superior'></div>
-<div class='logo-centro'><img src="https://generador-cartas-n8n.com/logo-centro.png" alt='Logo centro'></div>
-<div class='fecha'>Bogotá, <%= fecha %></div>
-<div class='titulo'>APEX ASSET MANAGEMENT CERTIFICA QUE</div>
-<div class='parrafo'>El señor(a), <b><%= Nombre %></b>, identificado(a) con cédula de ciudadanía <b><%= CC %></b>, tiene una obligación de tipo XXXXX número <b><%= Obligacion %></b> otorgado por <b><%= Otorgador %></b> y que fue adquirida por APEX ASSET MANAGEMENT S.A.S, identificada con NIT 901 228 870-1, con el siguiente detalle:</div>
+    <div class="header">
+        <img src="/logo-superior.png" alt="Logo superior">
+    </div>
 
-<div class='seccion-titulo'>Datos Iniciales del Crédito:</div>
-<table class='datos'>
-  <tr><td class='label'>Valor Inicial del Crédito:</td><td>$ <%= Valor_inicial %></td></tr>
-</table>
+    <div class="logo-centro">
+        <img src="/logo-centro.png" alt="Logo centro">
+    </div>
 
-<div class='seccion-titulo'>Datos de la deuda:</div>
-<table class='datos'>
-  <tr><td class='label'>Saldo a Capital:</td><td>$ <%= Saldo_K %></td></tr>
-  <tr><td class='label'>Intereses Causados:</td><td>$ <%= Intereses %></td></tr>
-  <tr><td class='label'>Otros Saldos:</td><td>$ <%= Otros_saldos %></td></tr>
-  <tr><td class='label'>Saldo Total de la Deuda:</td><td>$ <%= Saldo_T %></td></tr>
-  <tr><td class='label'>Abonos totales:</td><td>$ <%= Abonos %></td></tr>
-  <tr><td class='label'>Días de Mora a la fecha:</td><td>'<%= Mora %>'</td></tr>
-</table>
+    <div class="fecha">Bogotá, <%= fechaTexto %></div>
 
-<div class='parrafo' style='margin-top: 30px;'>Cordialmente,</div>
-<div class='firma-bloque'>
-  <img src="https://generador-cartas-n8n.com/firma_RL.png" alt='Firma'>
-  <div class='firma-nombre'>SGSM.</div>
-  <div>Representante Legal</div>
-  <div>APEX ASSET MANAGEMENT S.A.S</div>
-  <img src="https://generador-cartas-n8n.com/pie-pagina.png" alt='www.apexam.com.co'>
-</div>
+    <div class="titulo">APEX ASSET MANAGEMENT CERTIFICA QUE</div>
+
+    <div class="parrafo">
+        El señor(a), <b><%= Nombre %></b>, identificado(a) con cédula de ciudadanía <b><%= CC %></b>, tiene una obligación de tipo <%= Producto %> número <b><%= Obligacion %></b> otorgado por <b><%= Otorgador %></b> y que fue adquirida por APEX ASSET MANAGEMENT S.A.S, identificada con NIT 901 228 870-1, con el siguiente detalle:
+    </div>
+
+    <div class="seccion-titulo">Datos Iniciales del Crédito:</div>
+    <table class="datos">
+        <tr>
+            <td class="label">Valor Inicial del Crédito:</td>
+            <td>$ <%= Valor_inicial %></td>
+        </tr>
+    </table>
+
+    <div class="seccion-titulo">Datos de la deuda:</div>
+    <table class="datos">
+        <tr>
+            <td class="label">Saldo a Capital:</td>
+            <td>$ <%= Saldo_K %></td>
+        </tr>
+        <tr>
+            <td class="label">Intereses Causados:</td>
+            <td>$ <%= Intereses %></td>
+        </tr>
+        <tr>
+            <td class="label">Otros Saldos:</td>
+            <td>$ <%= Otros_saldos %></td>
+        </tr>
+        <tr>
+            <td class="label">Saldo Total de la Deuda:</td>
+            <td>$ <%= Saldo_T %></td>
+        </tr>
+        <tr>
+            <td class="label">Abonos totales:</td>
+            <td>$ <%= Abonos %></td>
+        </tr>
+        <tr>
+            <td class="label">Días de Mora a la fecha:</td>
+            <td>'<%= Mora %>'</td>
+        </tr>
+    </table>
+
+    <div class="parrafo" style="margin-top: 25px;">Cordialmente,</div>
+
+    <div class="firma-bloque">
+        <img src="/firma.png" alt="Firma">
+        <div class="firma-nombre">SGSM.</div>
+        <div>Representante Legal</div>
+        <div>APEX ASSET MANAGEMENT S.A.S</div>
+    </div>
+
+    <!-- Pie de página en HTML -->
+    <div class="footer-container">
+        <div class="footer-col">
+            <div><span class="icon">📍</span> Carrera 11 a No 89 - 10 Ofc. 302</div>
+            <div>Bogotá D.C / Colombia</div>
+        </div>
+        <div class="footer-col middle">
+            <div><span class="icon">✉️</span> administrativo@apexam.co</div>
+            <div><span class="icon">📞</span> (+57) 316 694 74 78</div>
+        </div>
+        <div>
+            <div class="footer-web">www.apexam.com.co</div>
+        </div>
+    </div>
 
 </body>
 </html>
