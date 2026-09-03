@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificado de Paz y Salvo</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            color: #222;
+            margin: 0;
+            padding: 40px 60px 100px 60px; /* Espacio abajo para el footer fijo */
+            box-sizing: border-box;
+            position: relative;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-height: 60px;
+        }
+        .logo-centro {
+            text-align: center;
+            margin: 15px 0 25px 0;
+        }
+        .logo-centro img {
+            max-height: 80px;
+        }
+        .referencia {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .titulo {
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .parrafo {
+            text-align: justify;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .nota {
+            font-style: italic;
+            text-align: justify;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+        .firma-bloque {
+            margin-top: 40px;
+            text-align: left;
+        }
+        .firma-bloque img {
+            max-height: 65px;
+            margin-bottom: 5px;
+        }
+        .firma-nombre {
+            font-weight: bold;
+        }
+        /* Footer dinámico en HTML */
+        .footer-container {
+            position: absolute;
+            bottom: 30px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #555;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 12px;
+        }
+        .footer-col {
+            flex: 1;
+            line-height: 1.5;
+        }
+        .footer-col.middle {
+            border-left: 2px solid #0098db;
+            padding-left: 15px;
+            margin: 0 15px;
+        }
+        .footer-col span.icon {
+            color: #0098db;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .footer-web {
+            background-color: #0098db;
+            color: white;
+            padding: 6px 15px;
+            font-weight: bold;
+            text-align: right;
+            clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="/logo-superior.png" alt="Logo superior">
+    </div>
+
+    <div class="logo-centro">
+        <img src="/logo-centro.png" alt="Logo centro">
+    </div>
+
+    <div class="referencia"><%= locals.referencia || 'REF BP PS 596' %></div>
+
+    <div class="titulo">APEX ASSET MANAGEMENT CERTIFICA QUE</div>
+
+    <div class="parrafo">
+        El (la) señor(a) <b><%= Nombre %></b>, identificado(a) con cédula de ciudadanía <b><%= CC %></b>, se encuentra a <b>PAZ Y SALVO</b> por todo concepto con la obligación de crédito de <%= Producto %> número <b><%= Obligacion %></b> otorgado por el <b><%= Otorgador %></b> y que fue adquirida por APEX ASSET MANAGEMENT con NIT 901 228 870-1.
+    </div>
+
+    <div class="parrafo">
+        Esta certificación se expide a solicitud del titular con destino a quien interese, con base en la información registrada a la fecha de su expedición.
+    </div>
+
+    <div class="nota">
+        “Nota: En caso de presentarse alguna diferencia o inconsistencia relacionada con la obligación aquí certificada, esta podrá ser subsanada o aclarada entre las partes, dejando sin efecto el presente Paz y Salvo hasta tanto dicha diferencia sea resuelta.”
+    </div>
+
+    <div class="parrafo">
+        Se expide en Quien Interese, a los <%= fechaTexto %>.
+    </div>
+
+    <div class="parrafo" style="margin-top: 25px;">Atentamente,</div>
+
+    <div class="firma-bloque">
+        <img src="/firma.png" alt="Firma">
+        <div class="firma-nombre">SGSM</div>
+        <div>REPRESENTANTE LEGAL</div>
+        <div>APEX ASSET MANAGEMENT S.A.S</div>
+        <div>NIT 901 228 870 – 1</div>
+    </div>
+
+    <!-- Pie de página en HTML -->
+    <div class="footer-container">
+        <div class="footer-col">
+            <div><span class="icon">📍</span> Carrera 11 a No 89 - 10 Ofc. 302</div>
+            <div>Bogotá D.C / Colombia</div>
+        </div>
+        <div class="footer-col middle">
+            <div><span class="icon">✉️</span> administrativo@apexam.co</div>
+            <div><span class="icon">📞</span> (+57) 316 694 74 78</div>
+        </div>
+        <div>
+            <div class="footer-web">www.apexam.com.co</div>
+        </div>
+    </div>
+
+</body>
+</html>
