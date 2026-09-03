@@ -25,7 +25,7 @@ const cargarImagenBase64 = (nombreArchivo) => {
 const imagenesGlobales = {
     logoSuperior: cargarImagenBase64('logo-superior.png'),
     logoCentro: cargarImagenBase64('logo-centro.png'),
-    firma: cargarImagenBase64('firma.png')
+    firma: cargarImagenBase64('firma_RL.png')
 };
 
 app.post('/generar-pdf', (req, res) => {
