@@ -8,15 +8,22 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Función auxiliar para convertir una imagen local a Base64
+// Función auxiliar para convertir una imagen local a Base64 con depuración
 function obtenerImagenBase64(nombreArchivo) {
     try {
         const rutaArchivo = path.join(__dirname, 'public', nombreArchivo);
+        console.log(`Buscando imagen en: ${rutaArchivo}`);
+        if (!fs.existsSync(rutaArchivo)) {
+            console.error(`¡ADVERTENCIA! El archivo no existe en la ruta: ${rutaArchivo}`);
+            return '';
+        }
         const bitmap = fs.readFileSync(rutaArchivo);
-        const extension = path.extname(nombreArchivo).substring(1);
-        return `data:image/${extension};base64,${bitmap.toString('base64')}`;
+        const extension = path.extname(nombreArchivo).toLowerCase().replace('.', '');
+        const mimeType = extension === 'jpg' ? 'jpeg' : extension;
+        console.log(`✅ Imagen cargada y convertida con éxito: ${nombreArchivo}`);
+        return `data:image/${mimeType};base64,${bitmap.toString('base64')}`;
     } catch (e) {
-        console.error(`No se pudo cargar la imagen ${nombreArchivo}:`, e.message);
+        console.error(`Error al procesar la imagen ${nombreArchivo}:`, e.message);
         return '';
     }
 }
