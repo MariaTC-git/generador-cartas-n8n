@@ -3,6 +3,8 @@ const app = express();
 
 app.use(express.json());
 
+app.use(express.static('public'));
+
 // Configurar el motor de plantillas EJS
 app.set('view engine', 'ejs');
 
