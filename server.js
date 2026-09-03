@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.use(express.json({ limit: '50mb' })); // Importante para recibir imágenes grandes en base64
+app.use(express.static('public'));
 
 app.post('/generar-pdf', (req, res) => {
     const data = req.body;
