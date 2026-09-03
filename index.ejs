@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+<meta charset='UTF-8'>
+<title>Certificado de Deuda</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #222; margin: 0; padding: 40px 60px; } 
+.header { display: flex; justify-content: flex-end; margin-bottom: 30px; } 
+.header img { max-height: 70px; } 
+.logo-centro { text-align: center; margin: 20px 0 30px 0; } 
+.logo-centro img { max-height: 90px; } 
+.fecha { margin-bottom: 25px; } 
+.titulo { text-align: center; font-weight: bold; font-size: 15px; margin-bottom: 20px; letter-spacing: 0.5px; } 
+.parrafo { text-align: justify; line-height: 1.6; margin-bottom: 20px; } 
+.seccion-titulo { font-weight: bold; margin-top: 15px; margin-bottom: 8px; } 
+table.datos { width: 100%; border-collapse: collapse; margin-bottom: 10px; } 
+table.datos td { padding: 4px 0; vertical-align: top; } 
+table.datos td.label { font-weight: bold; width: 220px; } 
+.firma-bloque { margin-top: 60px; text-align: left; } 
+.firma-bloque img { max-height: 70px; margin-bottom: 5px; } 
+.firma-nombre { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class='header'><img src="<%= logoSuperiorBase64 %>" alt='Logo superior'></div>
+<div class='logo-centro'><img src="<%= logoCentroBase64 %>" alt='Logo centro'></div>
+<div class='fecha'>Bogotá, <%= fecha %></div>
+<div class='titulo'>APEX ASSET MANAGEMENT CERTIFICA QUE</div>
+<div class='parrafo'>El señor(a), <b><%= Nombre %></b>, identificado(a) con cédula de ciudadanía <b><%= CC %></b>, tiene una obligación de tipo XXXXX número <b><%= Obligacion %></b> otorgado por <b><%= Otorgador %></b> y que fue adquirida por APEX ASSET MANAGEMENT S.A.S, identificada con NIT 901 228 870-1, con el siguiente detalle:</div>
+
+<div class='seccion-titulo'>Datos Iniciales del Crédito:</div>
+<table class='datos'>
+  <tr><td class='label'>Valor Inicial del Crédito:</td><td>$ <%= Valor_inicial %></td></tr>
+</table>
+
+<div class='seccion-titulo'>Datos de la deuda:</div>
+<table class='datos'>
+  <tr><td class='label'>Saldo a Capital:</td><td>$ <%= Saldo_K %></td></tr>
+  <tr><td class='label'>Intereses Causados:</td><td>$ <%= Intereses %></td></tr>
+  <tr><td class='label'>Otros Saldos:</td><td>$ <%= Otros_saldos %></td></tr>
+  <tr><td class='label'>Saldo Total de la Deuda:</td><td>$ <%= Saldo_T %></td></tr>
+  <tr><td class='label'>Abonos totales:</td><td>$ <%= Abonos %></td></tr>
+  <tr><td class='label'>Días de Mora a la fecha:</td><td>'<%= Mora %>'</td></tr>
+</table>
+
+<div class='parrafo' style='margin-top: 30px;'>Cordialmente,</div>
+<div class='firma-bloque'>
+  <img src="<%= firmaBase64 %>" alt='Firma'>
+  <div class='firma-nombre'>SGSM.</div>
+  <div>Representante Legal</div>
+  <div>APEX ASSET MANAGEMENT S.A.S</div>
+</div>
+
+</body>
+</html>
