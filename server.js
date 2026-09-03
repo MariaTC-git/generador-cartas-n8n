@@ -1,11 +1,25 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const puppeteer = require('puppeteer');
 const app = express();
 
 app.use(express.json());
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Función auxiliar para convertir una imagen local a Base64
+function obtenerImagenBase64(nombreArchivo) {
+    try {
+        const rutaArchivo = path.join(__dirname, 'public', nombreArchivo);
+        const bitmap = fs.readFileSync(rutaArchivo);
+        const extension = path.extname(nombreArchivo).substring(1);
+        return `data:image/${extension};base64,${bitmap.toString('base64')}`;
+    } catch (e) {
+        console.error(`No se pudo cargar la imagen ${nombreArchivo}:`, e.message);
+        return '';
+    }
+}
 
 app.post('/generar-pdf', async (req, res) => {
     try {
@@ -18,7 +32,11 @@ app.post('/generar-pdf', async (req, res) => {
         const mes = hoy.toLocaleString('es-ES', { month: 'long' });
         const anio = hoy.getFullYear();
         data.fechaTexto = `${dia} días del mes de ${mes} de ${anio}`;
-        data.baseUrl = 'https://generador-cartas-apex.onrender.com';
+
+        // Inyectar imágenes en Base64 para que Puppeteer las renderice sin problemas de red
+        data.logoSuperior = obtenerImagenBase64('logo-superior.png');
+        data.logoCentro = obtenerImagenBase64('logo-centro.png');
+        data.firma = obtenerImagenBase64('firma.png');
 
         // 1. Renderizar la vista EJS a HTML en memoria
         app.render(plantilla, data, async (err, html) => {
@@ -42,7 +60,7 @@ app.post('/generar-pdf', async (req, res) => {
                 // 4. Generar el PDF
                 const pdfBuffer = await page.pdf({
                     format: 'Letter',
-                    printBackground: true, // Vital para que salgan los fondos y colores
+                    printBackground: true, // Vital para fondos y colores
                     margin: { top: '2cm', bottom: '2cm', left: '2cm', right: '2cm' }
                 });
 
