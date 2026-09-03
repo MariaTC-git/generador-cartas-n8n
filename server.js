@@ -1,4 +1,13 @@
+const express = require('express');
+const path = require('path');
 const fs = require('fs');
+const puppeteer = require('puppeteer');
+
+const app = express();
+
+app.use(express.json());
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Función auxiliar para convertir imagen local a base64
 function getBase64Image(filePath) {
