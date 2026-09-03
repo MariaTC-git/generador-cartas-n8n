@@ -1,53 +1,68 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
+const puppeteer = require('puppeteer');
 const app = express();
 
 app.use(express.json());
 app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
-const cargarImagenBase64 = (nombreArchivo) => {
+app.post('/generar-pdf', async (req, res) => {
     try {
-        const ruta = path.join(__dirname, 'public', nombreArchivo);
-        console.log(`Buscando imagen en: ${ruta}`);
-        if (fs.existsSync(ruta)) {
-            const bitmap = fs.readFileSync(ruta);
-            const base64 = Buffer.from(bitmap).toString('base64');
-            console.log(`✅ Imagen cargada con éxito: ${nombreArchivo}`);
-            return `data:image/png;base64,${base64}`;
-        } else {
-            console.log(`❌ NO se encontró el archivo en la ruta: ${ruta}`);
-        }
-    } catch (e) {
-        console.log(`❌ Error al leer la imagen ${nombreArchivo}:`, e);
+        const data = req.body;
+        const plantilla = data.tipoPlantilla === '2' ? 'certificado2' : 'certificado1';
+
+        // Fecha en español
+        const hoy = new Date();
+        const dia = hoy.getDate();
+        const mes = hoy.toLocaleString('es-ES', { month: 'long' });
+        const anio = hoy.getFullYear();
+        data.fechaTexto = `${dia} días del mes de ${mes} de ${anio}`;
+        data.baseUrl = 'https://generador-cartas-apex.onrender.com';
+
+        // 1. Renderizar la vista EJS a HTML en memoria
+        app.render(plantilla, data, async (err, html) => {
+            if (err) {
+                console.error('Error al renderizar EJS:', err);
+                return res.status(500).json({ error: 'Error al renderizar la plantilla' });
+            }
+
+            try {
+                // 2. Lanzar Puppeteer
+                const browser = await puppeteer.launch({
+                    headless: 'new',
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                });
+                
+                const page = await browser.newPage();
+
+                // 3. Cargar el HTML generado
+                await page.setContent(html, { waitUntil: 'networkidle0' });
+
+                // 4. Generar el PDF
+                const pdfBuffer = await page.pdf({
+                    format: 'Letter',
+                    printBackground: true, // Vital para que salgan los fondos y colores
+                    margin: { top: '2cm', bottom: '2cm', left: '2cm', right: '2cm' }
+                });
+
+                await browser.close();
+
+                // 5. Enviar el PDF como respuesta binaria a n8n
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', 'attachment; filename="certificado.pdf"');
+                return res.send(pdfBuffer);
+
+            } catch (puppeteerError) {
+                console.error('Error en Puppeteer:', puppeteerError);
+                return res.status(500).json({ error: 'Error generando el PDF con Puppeteer' });
+            }
+        });
+
+    } catch (error) {
+        console.error('Error general:', error);
+        res.status(500).json({ error: error.message });
     }
-    return '';
-};
-
-// Precargamos las imágenes
-const imagenesGlobales = {
-    logoSuperior: cargarImagenBase64('logo-superior.png'),
-    logoCentro: cargarImagenBase64('logo-centro.png'),
-    firma: cargarImagenBase64('firma.png')
-};
-
-app.post('/generar-pdf', (req, res) => {
-    const data = req.body || {};
-    const plantilla = data.tipoPlantilla === '2' ? 'certificado2' : 'certificado1';
-
-    const hoy = new Date();
-    const dia = hoy.getDate();
-    const mes = hoy.toLocaleString('es-ES', { month: 'long' });
-    const anio = hoy.getFullYear();
-    
-    data.fechaTexto = `${dia} días del mes de ${mes} de ${anio}`;
-
-    const datosFinales = {
-        ...data,
-        ...imagenesGlobales
-    };
-    
-    res.render(plantilla, datosFinales);
 });
 
 const PORT = process.env.PORT || 3000;
