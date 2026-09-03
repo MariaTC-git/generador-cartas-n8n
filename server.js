@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json());
 
 // Configurar el motor de plantillas EJS
 app.set('view engine', 'ejs');
